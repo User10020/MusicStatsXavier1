@@ -14,6 +14,8 @@ from PageProfil import PageProfils
 from PagePrevision import PagePrevision
 
 
+from PageGeneration import PageGeneration
+
 #Chemin du CSV par défaut, calculé à partir du dossier de ce fichier
 #pour que l'application fonctionne peu importe d'où elle est lancée.
 #Dans l'exe, le CSV est dans le dossier temporaire créé par PyInstaller.
@@ -112,10 +114,17 @@ class ApplicationMusicStats(ctk.CTk):
         self.bouton_previsions = ctk.CTkButton(self.menu, text="Prévisions", command=self.afficher_previsions)
         self.bouton_previsions.pack(pady=10, padx=15, fill="x")
 
+
+        self.bouton_generateur = ctk.CTkButton(self.menu, text = "Générateur de playlist", command=self.afficher_generateur)       ######### projet personnel
+        self.bouton_generateur.pack(padx = 15, pady =10, fill="x")          #Erreur avec grid car autres boutons utilisent pack, fill = x étire le bouton sur toute la largeur du menu
+
+
+
         #Associe chaque nom de page à son bouton.
         self.boutons = {"dashboard": self.bouton_dashboard,
                         "profils": self.bouton_profils,
-                        "previsions": self.bouton_previsions}
+                        "previsions": self.bouton_previsions,
+                        "generateur" : self.bouton_generateur}  #ajustement du dictionnaire
 
         #Conserve la couleur normale des boutons pour pouvoir la remettre.
         self.couleur_bouton = self.bouton_dashboard.cget("fg_color")
@@ -126,7 +135,7 @@ class ApplicationMusicStats(ctk.CTk):
 
     #Crée le cadre qui contient les pages.
     def creer_zone_contenu(self):
-        self.contenu = ctk.CTkFrame(self)
+        self.contenu = ctk.CTkFrame(self)                                                                                               #####self.contenu ici
         self.contenu.pack(side="right", fill="both", expand=True, padx=10, pady=10)
 
         #Permet aux pages de prendre toute la zone disponible.
@@ -199,6 +208,8 @@ class ApplicationMusicStats(ctk.CTk):
         self.pages["profils"] = PageProfils(self.contenu, self.collection, self.analyseur, self.graphiques)
         self.pages["previsions"] = PagePrevision(self.contenu, self.collection)
 
+        self.pages["generateur"] = PageGeneration(self.contenu)         ###a finaliser plus tard
+
         #Place les pages dans la meme case puis les cache.
         for page in self.pages.values():
             page.grid(row=0, column=0, sticky="nsew")
@@ -212,7 +223,7 @@ class ApplicationMusicStats(ctk.CTk):
         cadre.grid(row=0, column=0)
 
         titre = ctk.CTkLabel(cadre, text="Impossible de charger les données", font=("Arial", 24, "bold"),
-                             text_color="#d9534f")
+                             text_color="#ac3834")
         titre.pack(pady=(0, 15))
 
         texte = ctk.CTkLabel(cadre, text=message, wraplength=650, justify="center")
@@ -257,6 +268,17 @@ class ApplicationMusicStats(ctk.CTk):
     def afficher_previsions(self):
         self.afficher_page("previsions")
 
+
+
+    #Changement dans projet personnel
+    #Affiche la page generateur de playlist //nouveau
+    def afficher_generateur(self):                          ############## projet personnel
+        self.afficher_page("generateur")        ####le dict des pages mis a jour
+    
+    
+    
+    
+    
     #Ferme les graphiques Matplotlib encore ouverts puis la fenetre.
     def quitter(self):
         plt.close("all")

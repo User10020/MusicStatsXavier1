@@ -1,2 +1,0 @@
-class ClassementUtilisateurs:
-    iiii
